@@ -27,6 +27,13 @@ class CreateProductosTable extends Migration
             $table->foreignId('tipo')->references('id')->on('tipo_productos')->comment('Tipo de producto');
             $table->timestamps();
         });
+
+        Schema::create('producto_detalles', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('producto')->references('id')->on('productos')->comment('Id de producto');
+            $table->string('imagen');
+            $table->timestamps();
+        });
     }
 
     /**
@@ -38,5 +45,6 @@ class CreateProductosTable extends Migration
     {
         Schema::dropIfExists('tipos_productos');
         Schema::dropIfExists('productos');
+        Schema::dropIfExists('foto_productos');
     }
 }

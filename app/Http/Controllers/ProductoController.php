@@ -4,10 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Producto;
 use App\TipoProducto;
+use App\ProductoDetalle;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use DataTables;
 
 class ProductoController extends Controller
 {
@@ -22,9 +22,9 @@ class ProductoController extends Controller
      */
     public function index()
     {
-        $productos = Producto::paginate(2);
-        $data = Producto::latest()->get();
-        return view('productos.index', compact('data'));
+        $productos = Producto::all();
+
+        return view('productos.index', compact('productos'));
     }
 
     /**
@@ -46,24 +46,60 @@ class ProductoController extends Controller
      */
     public function store(Request $request)
     {
+
         $data = request()->validate([
             'nombre' => 'required|min:6',
             'tipo' => 'required',
             'precio' => 'required|numeric|min:1|not_in:0',
             'descripcion' => 'required',
-
-        ]);
-         DB::table('productos')->insert([
-            'nombre' => $data['nombre'],
-            'tipo' => $data['tipo'],
-            'precio' => $data['precio'],
-            'descripcion' => $data['descripcion'],
-            'created_at' => date('Y-m-d H:i:s'),
+            'fotografias' => 'required',
+            
         ]);
 
+        if($request->hasFile('fotografias'))
+        {
+            $allowedfileExtension=['jpeg','jpg','png'];
+            $files = $request->file('fotografias');
+
+            foreach($files as $file)
+            {
+                $filename = $file->getClientOriginalName();
+                $extension = $file->getClientOriginalExtension();
+                $check=in_array($extension,$allowedfileExtension);
+            }
+
+            if($check)
+            {
+                // DB::table('productos')->insert([
+                //     'nombre' => $data['nombre'],
+                //     'tipo' => $data['tipo'],
+                //     'precio' => $data['precio'],
+                //     'descripcion' => $data['descripcion'],
+                //     'created_at' => date('Y-m-d H:i:s'),
+                // ]);
+                $productos = Producto::create($request->all());
+
+                foreach ($request->fotografias as $fotografia) {
+                    $filename = $fotografia->store('fotografias','public');
+                    ProductoDetalle::create([
+                        'producto' => $productos->id,
+                        'imagen' => $filename
+                    ]);
+                }
+                return redirect()->action('ProductoController@index')->with(['message' => 'Producto guardado', 'alert' => 'alert-success' , 'icon' => 'check-circle']);
+            }else{
+                return redirect()->action('ProductoController@index')->with(['message' => 'Archivo no aceptado', 'alert' => 'alert-danger' , 'icon' => 'info-circle']);
+
+            }
+        }else{
+            return redirect()->action('ProductoController@index')->with(['message' => 'Debe subir al menos una fotografia', 'alert' => 'alert-danger' , 'icon' => 'info-circle']);
+
+        }
+
+        
 
 
-        return redirect()->action('ProductoController@index')->with(['message' => 'Producto guardado', 'alert' => 'alert-success' , 'icon' => 'check-circle']);
+
 
         // return redirect()->;
     }
@@ -75,8 +111,10 @@ class ProductoController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function show(Producto $producto)
-    {
-        //
+    { 
+        // $tipos = TipoProducto::all(['id','nombre']);
+        $fotografias = ProductoDetalle::where('producto' , $producto->id)->get();
+        return view('productos.show', compact( 'producto', 'fotografias'));
     }
 
     /**
@@ -87,7 +125,9 @@ class ProductoController extends Controller
      */
     public function edit(Producto $producto)
     {
-        //
+        $tipos = TipoProducto::all(['id','nombre']);
+        $fotografias = ProductoDetalle::where('producto' , $producto->id)->get();
+        return view('productos.edit', compact('tipos', 'producto', 'fotografias'));
     }
 
     /**
@@ -99,7 +139,57 @@ class ProductoController extends Controller
      */
     public function update(Request $request, Producto $producto)
     {
-        //
+        $data = request()->validate([
+            'nombre' => 'required|min:6',
+            'tipo' => 'required',
+            'precio' => 'required|numeric|min:1|not_in:0',
+            'descripcion' => 'required',
+        ]);
+
+        $producto->nombre = $data['nombre'];
+        $producto->tipo = $data['tipo'];
+        $producto->precio = $data['precio'];
+        $producto->descripcion = $data['descripcion'];
+
+        if($request->hasFile('fotografias'))
+        {
+            $allowedfileExtension=['jpeg','jpg','png'];
+            $files = $request->file('fotografias');
+
+            foreach($files as $file)
+            {
+                $filename = $file->getClientOriginalName();
+                $extension = $file->getClientOriginalExtension();
+                $check=in_array($extension,$allowedfileExtension);
+            }
+
+            if($check)
+            {
+
+                // $productos = Producto::create($request->all());
+               
+
+                foreach ($request->fotografias as $fotografia) {
+                    $filename = $fotografia->store('fotografias','public');
+                    ProductoDetalle::create([
+                        'producto' => $producto->id,
+                        'imagen' => $filename
+                    ]);
+                }
+                
+            }else{
+                return redirect()->action('ProductoController@index')->with(['message' => 'Archivo no aceptado', 'alert' => 'alert-danger' , 'icon' => 'info-circle']);
+
+            }
+        }
+
+        $producto->save();
+        return redirect()->action('ProductoController@index')->with(['message' => 'Producto modificado', 'alert' => 'alert-success' , 'icon' => 'check-circle']);
+
+
+        // return redirect()->action('ProductoController@index')->with(['message' => 'Producto modificado', 'alert' => 'alert-success' , 'icon' => 'check-circle']);
+
+        
     }
 
     /**
@@ -115,17 +205,15 @@ class ProductoController extends Controller
 
     public function getProductos(Request $request)
     {
-        if ($request->ajax()) {
-            $data = Producto::latest()->get();
-            return Datatables::of($data)
-                ->addIndexColumn()
-                ->addColumn('action', function($row){
-                    $actionBtn = '<a href="javascript:void(0)" class="edit btn btn-success btn-sm">Edit</a> <a href="javascript:void(0)" class="delete btn btn-danger btn-sm">Delete</a>';
-                    return $actionBtn;
-                })
-                ->rawColumns(['action'])
-                ->make(true);
-        }
+
+        $productos = DB::table('productos')
+                        ->join('tipo_productos','productos.tipo', '=','tipo_productos.id')
+                        ->select('productos.*', 'tipo_productos.nombre as tipo_nombre')
+                        ->get();
+        return json_encode($productos);
+        
+
+        // return "hola";
     }
 
 

@@ -1,59 +1,91 @@
 @extends('layouts.app')
 @section('styles')
-    <link href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css" rel="stylesheet">
-    <link href="https://cdn.datatables.net/1.10.21/css/dataTables.bootstrap4.min.css" rel="stylesheet">
+
+    {{-- <link href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css" rel="stylesheet">
+    <link href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap4.min.css" rel="stylesheet"> --}}
 @endsection
 @section('content')
-    <h2 class="mb-4">Laravel 7|8 Yajra Datatables Example</h2>
-    <table class="table table-bordered yajra-datatable">
-        <thead>
-            <tr>
-                <th>No</th>
-                <th>Nombre</th>
-                <th>Descripcion</th>
-                <th>Tipo</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-        <tbody>
-        </tbody>
-    </table>
+    <div class="row">
+        <div class="col-10">
+            <h2 class="mb-4">Productos ingresados</h2>
+        </div>
+        <div class="col-2">
+            <a href="{{ route('productos.create') }}" class="btn btn-primary w-100"><i class="bi bi-plus-circle mr-2"></i>Nuevo</a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 table-responsive">
+            <table id="datatable" class="table table-light table-striped w-100 text-center">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Descripcion</th>
+                        <th>Tipo</th>
+                        <th>Precio</th>
+                        <th>Opciones</th>
+
+                    </tr>
+                </thead>
+                <tbody >
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
 
 @endsection
 @section('scripts')
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>  
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.js"></script>
-<script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
-<script src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>  
+{{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.js"></script> --}}
+<script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap4.min.js"></script>
+
 <script type="text/javascript">
-  $(function () {
-    
-    var table = $('.yajra-datatable').DataTable({
-        processing: true,
-        serverSide: true,
-        ajax: "{{ route('productos.list') }}",
-        columns: [
-            {data: 'DT_RowIndex', name: 'DT_RowIndex'},
-            {data: 'nombre', name: 'nombre'},
-            {data: 'descripcion', name: 'descripcion'},
-            {data: 'tipo', name: 'tipo'},
-            {
-                data: 'action', 
-                name: 'action', 
-                orderable: false, 
-                searchable: false
-            },
-        ],
-        "columnDefs": [
-            {
-            "data": null,
-            "defaultContent": "<button>Edit</button>",
-            "targets": -2
-            }
-        ]
-    });
-    
-  });
+    const buscarProductos = async () => {
+        const url = "{{ route( 'productos.list' ) }}"
+
+        const config = { method : 'GET'}
+
+        const response = await fetch(url, config);
+        const data = await response.json();
+        let table = new DataTable('#datatable', {
+            data,
+            columns: [
+                { data: 'nombre' },
+                { 
+                    data: 'descripcion', 
+                    "render" : ( data, type, row, meta ) => data.length > 30 ? data.substr(0,30) + '...' : data.substr(0,30)
+                },
+                { data: 'tipo_nombre' },
+                { 
+                    "data": 'precio', 
+                    "render": ( data, type, row, meta ) => `Q. ${data}`,
+                    "width" : '15%',
+                },
+                { 
+                    "data": "id",
+                    "orderable": false,
+                    "searchable" : false,
+                    "width" : '25%',
+                    "render": ( data, type, row, meta ) => {
+                        
+                        return `
+                            <div class="btn-group" role="group">
+                                <a href='productos/${data}' class='btn btn-info'><i class='bi bi-file-post mr-2'></i>Ver</a>
+                                <a class='btn btn-warning' href='productos/${data}/edit'><i class='bi bi-pencil mr-2'></i>Editar</a>
+                                <a class='btn btn-danger'><i class='bi bi-trash mr-2'></i>Eliminar</a>
+                            </div>
+                        `
+                        
+                    }
+                }
+            ]
+
+           
+        });
+    }
+
+    buscarProductos();
+
 </script>
 @endsection
