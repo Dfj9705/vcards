@@ -8,6 +8,7 @@ use App\ProductoDetalle;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Intervention\Image\Facades\Image;
 
 class ProductoController extends Controller
 {
@@ -70,17 +71,14 @@ class ProductoController extends Controller
 
             if($check)
             {
-                // DB::table('productos')->insert([
-                //     'nombre' => $data['nombre'],
-                //     'tipo' => $data['tipo'],
-                //     'precio' => $data['precio'],
-                //     'descripcion' => $data['descripcion'],
-                //     'created_at' => date('Y-m-d H:i:s'),
-                // ]);
+            
                 $productos = Producto::create($request->all());
 
                 foreach ($request->fotografias as $fotografia) {
                     $filename = $fotografia->store('fotografias','public');
+
+                    $img = Image::make( public_path("storage/{$filename}") )->fit(750,750);
+                    $img->save();
                     ProductoDetalle::create([
                         'producto' => $productos->id,
                         'imagen' => $filename
@@ -159,6 +157,7 @@ class ProductoController extends Controller
             foreach($files as $file)
             {
                 $filename = $file->getClientOriginalName();
+               
                 $extension = $file->getClientOriginalExtension();
                 $check=in_array($extension,$allowedfileExtension);
             }
@@ -171,6 +170,8 @@ class ProductoController extends Controller
 
                 foreach ($request->fotografias as $fotografia) {
                     $filename = $fotografia->store('fotografias','public');
+                    $img = Image::make( public_path("storage/{$filename}") )->fit(750,750);
+                    $img->save();
                     ProductoDetalle::create([
                         'producto' => $producto->id,
                         'imagen' => $filename

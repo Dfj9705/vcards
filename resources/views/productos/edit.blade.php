@@ -77,20 +77,28 @@
     </form>
   
 </div>
-<h2>Imagenes del producto</h2>
+<div class="row justify-content-center">
+    <div class="col-12">
+        <h2>Imagenes del producto</h2>
+    </div>
+</div>
 <div class="row  mb-3 ">
-    @foreach ($fotografias as $fotografia)
-        <div class="col-md-2 border mr-2 p-2 rounded">
-            <form method="POST" action="{{ route('fotografias.destroy',['fotografia' => $fotografia->id]) }}" id="formulario{{$fotografia->id}}">
-                @method('delete')
-                @csrf
-                <button type="submit" form="formulario{{$fotografia->id}}" class="close" aria-label="Close">
-                    <span class="text-danger" aria-hidden="true">&times;</span>
-                </button>
-            </form>
-            <img src="/storage/{{$fotografia->imagen}}" alt="ImagenProducto{{$fotografia->id}}" class="w-100">
-        </div>
-    @endforeach
+    @if (count($fotografias) >0)
+        @foreach ($fotografias as $fotografia)
+            <div class="col-md-2 border mr-2 p-2 rounded">
+                <form method="POST" action="{{ route('fotografias.destroy',['fotografia' => $fotografia->id]) }}" id="formulario{{$fotografia->id}}">
+                    @method('delete')
+                    @csrf
+                    <button type="submit" form="formulario{{$fotografia->id}}" class="close" aria-label="Close">
+                        <span class="text-danger" aria-hidden="true">&times;</span>
+                    </button>
+                </form>
+                <img src="/storage/{{$fotografia->imagen}}" alt="ImagenProducto{{$fotografia->id}}" class="w-100">
+            </div>
+        @endforeach
+    @else
+        <p class="lead">Aún no hay imágenes</p>
+    @endif
 
 </div>    
 @endsection
