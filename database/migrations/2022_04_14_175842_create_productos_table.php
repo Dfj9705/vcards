@@ -24,13 +24,13 @@ class CreateProductosTable extends Migration
             $table->string('nombre');
             $table->text('descripcion');
             $table->decimal('precio');
-            $table->foreignId('tipo')->references('id')->on('tipo_productos')->comment('Tipo de producto');
+            $table->foreignId('tipo_id')->references('id')->on('tipo_productos')->comment('Tipo de producto');
             $table->timestamps();
         });
 
         Schema::create('producto_detalles', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('producto')->references('id')->on('productos')->comment('Id de producto');
+            $table->foreignId('producto_id')->references('id')->on('productos')->comment('Id de producto');
             $table->string('imagen');
             $table->timestamps();
         });

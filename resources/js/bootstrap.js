@@ -10,7 +10,7 @@ try {
     window.Popper = require('popper.js').default;
     window.$ = window.jQuery = require('jquery');
     var $  = require( 'jquery' );
-    var dt = require( 'datatables.net' )();
+    const Swal = require( 'sweetalert2');
     require('bootstrap');
 } catch (e) {}
 

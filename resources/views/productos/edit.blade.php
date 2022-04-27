@@ -28,7 +28,7 @@
                 <select name="tipo" id="tipo" class="form-control @error('tipo') is-invalid @enderror">
                     <option value="">Seleccione...</option>
                     @foreach ($tipos as $tipo)
-                        <option value="{{$tipo->id}}" {{$producto->tipo == $tipo->id ? 'selected' : ''}}>{{$tipo->nombre}}</option>
+                        <option value="{{$tipo->id}}" {{$producto->tipo_id == $tipo->id ? 'selected' : ''}}>{{$tipo->nombre}}</option>
                     @endforeach
                 </select>
                 @error('tipo')

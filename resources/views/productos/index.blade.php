@@ -41,6 +41,7 @@
 <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap4.min.js"></script>
 
 <script type="text/javascript">
+   
     const buscarProductos = async () => {
         const url = "{{ route( 'productos.list' ) }}"
 
@@ -48,6 +49,7 @@
 
         const response = await fetch(url, config);
         const data = await response.json();
+        new DataTable('#datatable').destroy();
         let table = new DataTable('#datatable', {
             data,
             columns: [
@@ -73,19 +75,23 @@
                             <div class="btn-group" role="group">
                                 <a href='productos/${data}' class='btn btn-info'><i class='bi bi-file-post mr-2'></i>Ver</a>
                                 <a class='btn btn-warning' href='productos/${data}/edit'><i class='bi bi-pencil mr-2'></i>Editar</a>
-                                <a class='btn btn-danger'><i class='bi bi-trash mr-2'></i>Eliminar</a>
+                                <a class='btn btn-danger' onclick='confirmDelete(${data})'><i class='bi bi-trash mr-2'></i>Eliminar</a>
                             </div>
                         `
                         
                     }
                 }
-            ]
+            ],
+            paging: false,
+            searching: false
 
            
         });
     }
 
     buscarProductos();
+
+    
 
 </script>
 @endsection

@@ -47,7 +47,7 @@ class ProductoController extends Controller
      */
     public function store(Request $request)
     {
-
+        
         $data = request()->validate([
             'nombre' => 'required|min:6',
             'tipo' => 'required',
@@ -56,7 +56,7 @@ class ProductoController extends Controller
             'fotografias' => 'required',
             
         ]);
-
+      
         if($request->hasFile('fotografias'))
         {
             $allowedfileExtension=['jpeg','jpg','png'];
@@ -71,8 +71,13 @@ class ProductoController extends Controller
 
             if($check)
             {
-            
-                $productos = Producto::create($request->all());
+                // dd($data);
+                $productos = Producto::create([
+                    'nombre' => $data['nombre'],
+                    'descripcion' => $data['descripcion'],
+                    'precio' => $data['precio'],
+                    'tipo_id' => $data['tipo'],
+                ]);
 
                 foreach ($request->fotografias as $fotografia) {
                     $filename = $fotografia->store('fotografias','public');
@@ -80,7 +85,7 @@ class ProductoController extends Controller
                     $img = Image::make( public_path("storage/{$filename}") )->fit(750,750);
                     $img->save();
                     ProductoDetalle::create([
-                        'producto' => $productos->id,
+                        'producto_id' => $productos->id,
                         'imagen' => $filename
                     ]);
                 }
@@ -110,9 +115,8 @@ class ProductoController extends Controller
      */
     public function show(Producto $producto)
     { 
-        // $tipos = TipoProducto::all(['id','nombre']);
-        $fotografias = ProductoDetalle::where('producto' , $producto->id)->get();
-        return view('productos.show', compact( 'producto', 'fotografias'));
+      
+        return view('productos.show', compact( 'producto'));
     }
 
     /**
@@ -124,7 +128,7 @@ class ProductoController extends Controller
     public function edit(Producto $producto)
     {
         $tipos = TipoProducto::all(['id','nombre']);
-        $fotografias = ProductoDetalle::where('producto' , $producto->id)->get();
+        $fotografias = ProductoDetalle::where('producto_id' , $producto->id)->get();
         return view('productos.edit', compact('tipos', 'producto', 'fotografias'));
     }
 
@@ -145,7 +149,7 @@ class ProductoController extends Controller
         ]);
 
         $producto->nombre = $data['nombre'];
-        $producto->tipo = $data['tipo'];
+        $producto->tipo_id = $data['tipo'];
         $producto->precio = $data['precio'];
         $producto->descripcion = $data['descripcion'];
 
@@ -173,7 +177,7 @@ class ProductoController extends Controller
                     $img = Image::make( public_path("storage/{$filename}") )->fit(750,750);
                     $img->save();
                     ProductoDetalle::create([
-                        'producto' => $producto->id,
+                        'producto_id' => $producto->id,
                         'imagen' => $filename
                     ]);
                 }
@@ -201,14 +205,21 @@ class ProductoController extends Controller
      */
     public function destroy(Producto $producto)
     {
-        //
+        // $producto->delete();
+        // return redirect()->action('ProductoController@index');
+        foreach ($producto->fotografias as $fotografia) {
+           $fotografia->delete();
+        } 
+        $producto->delete();
+
+        return redirect()->back();
     }
 
     public function getProductos(Request $request)
     {
 
         $productos = DB::table('productos')
-                        ->join('tipo_productos','productos.tipo', '=','tipo_productos.id')
+                        ->join('tipo_productos','productos.tipo_id', '=','tipo_productos.id')
                         ->select('productos.*', 'tipo_productos.nombre as tipo_nombre')
                         ->get();
         return json_encode($productos);

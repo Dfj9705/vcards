@@ -24,6 +24,7 @@ Route::get('/productos/list', 'ProductoController@getProductos')->name('producto
 Route::get('/productos/{producto}', 'ProductoController@show')->name('productos.show');
 Route::get('/productos/{producto}/edit', 'ProductoController@edit')->name('productos.edit');
 Route::put('/productos/{producto}', 'ProductoController@update')->name('productos.update');
+Route::delete('/productos/{producto}', 'ProductoController@destroy')->name('productos.destroy');
 
 Route::delete('/fotografia/{fotografia}', 'ProductoDetalleController@destroy')->name('fotografias.destroy');
 
