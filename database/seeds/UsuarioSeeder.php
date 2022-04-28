@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Seeder;
 use App\User;
+use Spatie\Permission\Models\Role;
 class UsuarioSeeder extends Seeder
 {
     /**
@@ -16,5 +17,9 @@ class UsuarioSeeder extends Seeder
             'email' => 'correo@correo.com',
             'password' => Hash::make('123456789'),
         ]);
+
+      
+        $user->assignRole('administrador');
+
     }
 }

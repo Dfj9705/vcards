@@ -15,6 +15,7 @@ class ProductoController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
+        $this->authorizeResource(Producto::class);
     }
     /**
      * Display a listing of the resource.
@@ -23,6 +24,7 @@ class ProductoController extends Controller
      */
     public function index()
     {
+        // $this->authorize('viewAny');
         $productos = Producto::all();
 
         return view('productos.index', compact('productos'));
