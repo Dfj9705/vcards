@@ -55,7 +55,7 @@
                     <ul class="navbar-nav ml-auto">
                         <!-- Authentication Links -->
                         <li class="nav-item">
-                            <a href="#" class="nav-link" data-toggle="modal" data-target="#storeModal"><i class="bi bi-bag mr-1"></i>Ver carrito</a>
+                            <a href="#" class="nav-link" data-toggle="modal" data-target="#storeModal"><i class="bi bi-bag mr-1"></i>Cotizaciones</a>
                         </li>
                         @guest
                             <li class="nav-item">

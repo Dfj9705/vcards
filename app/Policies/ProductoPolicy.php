@@ -30,7 +30,7 @@ class ProductoPolicy
      */
     public function view(User $user, Producto $producto)
     {
-        return $user->hasRole('administrador');
+        return true;
     }
 
     /**
