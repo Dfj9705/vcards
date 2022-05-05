@@ -20,19 +20,21 @@
                     @endforeach
                    
                 </div>
-                <a class="carousel-control-prev" href="#carouselExampleInterval" role="button" data-slide="prev">
-                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                    <span class="sr-only">Previous</span>
-                </a>
-                <a class="carousel-control-next" href="#carouselExampleInterval" role="button" data-slide="next">
-                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                    <span class="sr-only">Next</span>
-                </a>
+                @if (count($producto->fotografias) > 1)
+                    <a class="carousel-control-prev" href="#carouselExampleInterval" role="button" data-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                    <a class="carousel-control-next" href="#carouselExampleInterval" role="button" data-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                @endif
             </div>
         </div>
         <div class="col-md-4">
             <h2>Descripción del producto</h2>
-            <p class="text-justify">{{ $producto->descripcion }}</p>
+            <p class="text-justify">{!! $producto->descripcion !!}</p>
             <p class="h4 text-success font-weight-bold">Precio: Q.{{ number_format($producto->precio, 2) }}</p>
             <div class="row">
                 <div class="col-6">

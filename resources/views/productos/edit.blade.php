@@ -47,7 +47,7 @@
                 @enderror
             </div>
         </div>
-        <div class="row  mb-3">
+        {{-- <div class="row  mb-3">
             <div class="col-12">
                 <label for="descripcion">Descripción del producto/servicio</label>
                 <textarea name="descripcion" id="descripcion " class="form-control @error('descripcion') is-invalid @enderror">{{ $producto->descripcion }}</textarea>
@@ -57,8 +57,9 @@
                     </span>
                 @enderror
             </div>
-        </div>
-               <div class="row  mb-3">
+        </div> --}}
+        <x-forms.tinymce-editor :descripcion="$producto->descripcion"/>
+        <div class="row  mb-3">
             <div class="col-12">
                 <label for="fotografia">Fotografias del producto</label>
                 <input type="file" name="fotografias[]" accept=".png,.jpeg,.jpg" multiple class="form-control @error('fotografias') is-invalid @enderror">{{ old('fotografias') }}</textarea>

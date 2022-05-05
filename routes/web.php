@@ -28,7 +28,11 @@ Route::delete('/productos/{producto}', 'ProductoController@destroy')->name('prod
 
 Route::delete('/fotografia/{fotografia}', 'ProductoDetalleController@destroy')->name('fotografias.destroy');
 
+Route::get('/store', 'StoreController@index')->name('store.index');
+
 
 Auth::routes();
+
+
 
 Route::get('/home', 'HomeController@index')->name('home');

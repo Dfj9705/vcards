@@ -17,6 +17,7 @@
     
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <x-head.tinymce-config/>
     <link rel="shortcut icon" href="{{ asset('images/v_logo.jpeg') }}" type="image/x-icon">
     @yield('styles')
 </head>
@@ -34,7 +35,11 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav mr-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('store.index') }}">Tienda</a>
+                        </li>
                         @guest
+                           
                         @else
                             @if (Auth::user()->hasRole('administrador'))
                                 <li class="nav-item">
@@ -49,6 +54,9 @@
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ml-auto">
                         <!-- Authentication Links -->
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-toggle="modal" data-target="#storeModal"><i class="bi bi-bag mr-1"></i>Ver carrito</a>
+                        </li>
                         @guest
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
@@ -94,6 +102,35 @@
             @endif
             @yield('content')
         </main>
+        <footer class="container-fluid text-center  border-top bg-light fixed-bottom">
+            <div class="row">
+                <div class="col-12">
+                    <p class=" text-muted">
+                        VcardsGT, 2022 &copy;
+                    </p>
+                </div>
+            </div>
+        </footer>
+    </div>
+    
+    <div class="modal fade" id="storeModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Carrito</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Modal body text goes here.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary">Save changes</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+            </div>
+        </div>
     </div>
     @yield('scripts')
 </body>

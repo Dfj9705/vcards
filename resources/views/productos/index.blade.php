@@ -19,7 +19,6 @@
                 <thead class="table-dark">
                     <tr>
                         <th>Nombre</th>
-                        <th>Descripcion</th>
                         <th>Tipo</th>
                         <th>Precio</th>
                         <th>Opciones</th>
@@ -54,10 +53,6 @@
             data,
             columns: [
                 { data: 'nombre' },
-                { 
-                    data: 'descripcion', 
-                    "render" : ( data, type, row, meta ) => data.length > 30 ? data.substr(0,30) + '...' : data.substr(0,30)
-                },
                 { data: 'tipo_nombre' },
                 { 
                     "data": 'precio', 
@@ -68,7 +63,7 @@
                     "data": "id",
                     "orderable": false,
                     "searchable" : false,
-                    "width" : '25%',
+                    "width" : '35%',
                     "render": ( data, type, row, meta ) => {
                         
                         return `

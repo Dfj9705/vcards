@@ -46,7 +46,7 @@
                 @enderror
             </div>
         </div>
-        <div class="row  mb-3">
+        {{-- <div class="row  mb-3">
             <div class="col-12">
                 <label for="descripcion">Descripción del producto/servicio</label>
                 <textarea name="descripcion" id="descripcion " class="form-control @error('descripcion') is-invalid @enderror">{{ old('descripcion') }}</textarea>
@@ -56,7 +56,10 @@
                     </span>
                 @enderror
             </div>
-        </div>
+        </div> --}}
+        <x-forms.tinymce-editor :descripcion="old('descripcion')"/>
+           
+
         <div class="row  mb-3">
             <div class="col-12">
                 <label for="fotografia">Fotografias del producto</label>
@@ -68,6 +71,8 @@
                 @enderror
             </div>
         </div>
+       
+       
         <div class="row justify-content-end mb-3">
             <div class="col-lg-3">
                 <button class="btn btn-primary w-100"><i class="bi bi-save mr-2"></i>Guardar</button>
