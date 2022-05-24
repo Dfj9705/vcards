@@ -42,4 +42,8 @@ class User extends Authenticatable
     {
         return $this->hasMany(Producto::class);
     }
+    public function cotizaciones()
+    {
+        return $this->hasMany(Cotizacion::class);
+    }
 }

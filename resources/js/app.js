@@ -16,4 +16,5 @@ import "bootstrap-icons/font/bootstrap-icons.css"
  */
 
 require('./components/Example');
+require('./components/Modal');
 
