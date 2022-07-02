@@ -20,6 +20,7 @@
     <x-head.tinymce-config/>
     <link rel="shortcut icon" href="{{ asset('images/v_logo.jpeg') }}" type="image/x-icon">
     @yield('styles')
+    @livewireStyles
 </head>
 <body>
     <div id="app">
@@ -45,6 +46,9 @@
                                 <li class="nav-item">
                                     <a class="nav-link" href="{{ route('productos.index') }}">Productos</a>
                                 </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ route('cotizacion.index') }}">Cotizaciones</a>
+                                </li>
                             @endif
                         @endguest
                         
@@ -54,9 +58,7 @@
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ml-auto">
                         <!-- Authentication Links -->
-                        <li class="nav-item">
-                            <a href="#" class="nav-link" data-toggle="modal" data-target="#storeModal"><i class="bi bi-bag mr-1"></i>Cotizaciones</a>
-                        </li>
+                      
                         @guest
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
@@ -67,6 +69,9 @@
                                 </li>
                             @endif
                         @else
+                            <li class="nav-item">
+                                <a href="#" class="nav-link" data-toggle="modal" data-target="#storeModal"><i class="bi bi-bag mr-1"></i>Cotizaciones</a>
+                            </li>
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                    <i class="bi bi-person-circle"></i> {{ Auth::user()->name }}
@@ -113,7 +118,30 @@
         </footer>
     </div>
     
-    <div id="modal"></div>
+    {{-- <div id="modal"></div> --}}
+    <div  class="modal fade" id="storeModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Cotizaciones</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            @guest
+
+            @else
+            <livewire:cotizaciones />
+                
+            @endguest
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary">Save changes</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+            </div>
+        </div>
+    </div>
     @yield('scripts')
+    @livewireScripts
 </body>
 </html>

@@ -10,4 +10,10 @@ class Cotizacion extends Model
     protected $fillable = [
         'fecha', 'producto_id', 'cantidad','user_id',
     ];
+
+    public function producto()
+    {
+        
+        return $this->belongsTo(Producto::class);
+    }
 }

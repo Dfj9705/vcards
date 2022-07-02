@@ -6,14 +6,14 @@
 @endsection
 @section('content')
     <div class="row">
-        <div class="col-10">
+        <div class="col-lg-10">
             <h2 class="mb-4">Productos ingresados</h2>
         </div>
-        <div class="col-2">
+        <div class="col-lg-2">
             <a href="{{ route('productos.create') }}" class="btn btn-primary w-100"><i class="bi bi-plus-circle mr-2"></i>Nuevo</a>
         </div>
     </div>
-    <div class="row">
+    <div class="row justify-content-between">
         <div class="col-12 table-responsive">
             <table id="datatable" class="table table-light table-striped w-100 text-center">
                 <thead class="table-dark">
@@ -77,8 +77,8 @@
                     }
                 }
             ],
-            paging: false,
-            searching: false
+            paging: true,
+            searching: true
 
            
         });

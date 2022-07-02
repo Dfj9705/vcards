@@ -31,8 +31,8 @@
                    
                 </div>
                 <div class="card-body">
-                    <h5 class="card-title">{{ $producto->nombre }}</h5>
-                    <p class="card-text text-justify">{{ Str::words( strip_tags($producto->descripcion) , 10 )}}</p>
+                    <h5 class="card-title font-weight-bold">{{ $producto->nombre }}</h5>
+                    {{-- <p class="card-text text-justify">{!! $producto->descripcion !!}</p> --}}
                     <a href="{{ route('productos.show', ['producto' => $producto->id]) }}" class="btn btn-primary btn-block">Ver</a>
                 </div>
             </div>

@@ -16,9 +16,10 @@ class CreateCotizacionsTable extends Migration
         Schema::create('cotizaciones', function (Blueprint $table) {
             $table->id();
             $table->foreignId('producto_id')->references('id')->on('productos')->comment('Id de producto');
-            $table->foreignId('user_id')->references('id')->on('productos')->comment('Usuario que cotiza');
+            $table->foreignId('user_id')->references('id')->on('users')->comment('Usuario que cotiza');
             $table->dateTime('fecha')->comment('fecha de la cotización');
             $table->integer('cantidad')->comment('cantidad de productos');
+            $table->smallInteger('status')->default(1)->comment('estado de la cotizacion');
             $table->timestamps();
         });
     }

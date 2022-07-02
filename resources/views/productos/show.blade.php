@@ -1,10 +1,10 @@
 @extends('layouts.app')
 @section('content')
     <div class="row">
-        <div class="col-10">
+        <div class="col-lg-10">
             <h1>{{ $producto->nombre }}</h1>
         </div>
-        <div class="col-2">
+        <div class="col-lg-2">
             <a href="{{ url()->previous() }}" class="btn btn-secondary w-100"><i class="bi bi-caret-left mr-2"></i>Volver</a>
         </div>
     </div>

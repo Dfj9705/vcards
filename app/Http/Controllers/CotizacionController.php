@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use App\Cotizacion;
 use Validator;
 
@@ -16,7 +17,14 @@ class CotizacionController extends Controller
      */
     public function index()
     {
-        //
+        $cotizaciones = DB::table('cotizaciones')
+        ->select('fecha', 'cantidad', 'users.name', 'users.email','users.telefono','productos.nombre','cotizaciones.status', 'cotizaciones.id')
+        ->join('users','cotizaciones.user_id', '=','users.id')
+        ->join('productos','cotizaciones.producto_id','=','productos.id')
+        ->where('status','=','1')
+        ->get();
+
+        return view('cotizaciones.index', compact('cotizaciones'));
     }
 
     /**
@@ -51,7 +59,6 @@ class CotizacionController extends Controller
                 'cantidad' => $request['cantidad'],
                 'user_id' => Auth::user()->id,
             ]);
-
             return response()->json($cotizacion);
 
         }

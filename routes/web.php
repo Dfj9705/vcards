@@ -31,8 +31,9 @@ Route::delete('/fotografia/{fotografia}', 'ProductoDetalleController@destroy')->
 Route::get('/store', 'StoreController@index')->name('store.index');
 
 
+Route::get('/cotizaciones', 'CotizacionController@index')->name('cotizacion.index');
 Route::post('/cotizacion', 'CotizacionController@store')->name('cotizacion.store');
-Route::get('/cotizaciones', 'CotizacionController@cotizaciones')->name('cotizacion.all');
+Route::get('/cotizaciones/all', 'CotizacionController@cotizaciones')->name('cotizacion.all');
 
 
 Auth::routes();
