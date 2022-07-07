@@ -5,11 +5,20 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\CotizacionStatus;
 use App\Cotizacion;
+use App\Mail\CotizacionCreate;
+use App\Mail\CotizacionEdit;
 use Validator;
 
 class CotizacionController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+        // $this->authorizeResource(Cotizacion::class);
+    }
     /**
      * Display a listing of the resource.
      *
@@ -21,10 +30,27 @@ class CotizacionController extends Controller
         ->select('fecha', 'cantidad', 'users.name', 'users.email','users.telefono','productos.nombre','cotizaciones.status', 'cotizaciones.id')
         ->join('users','cotizaciones.user_id', '=','users.id')
         ->join('productos','cotizaciones.producto_id','=','productos.id')
-        ->where('status','=','1')
+        ->orderBy('id', 'desc')
         ->get();
 
         return view('cotizaciones.index', compact('cotizaciones'));
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function calendario()
+    {
+        $cotizaciones = DB::table('cotizaciones')
+        ->select('fecha as date',  'productos.nombre as title', 'cotizaciones.id as id', 'users.name as usuario')
+        ->join('users','cotizaciones.user_id', '=','users.id')
+        ->join('productos','cotizaciones.producto_id','=','productos.id')
+        ->where('status','=','2')
+        ->get();
+
+        return view('calendario.index', compact('cotizaciones'));
     }
 
     /**
@@ -59,10 +85,10 @@ class CotizacionController extends Controller
                 'cantidad' => $request['cantidad'],
                 'user_id' => Auth::user()->id,
             ]);
+            Mail::to($cotizacion->usuario->email)->send( new CotizacionCreate($cotizacion) );
             return response()->json($cotizacion);
 
         }
-
         return response()->json(['error'=>$validator->errors()->all()]);
       
     }
@@ -86,7 +112,8 @@ class CotizacionController extends Controller
      */
     public function edit($id)
     {
-        //
+        $cotizacion = Cotizacion::find($id);
+        return view('cotizaciones.edit', compact('cotizacion'));
     }
 
     /**
@@ -98,7 +125,36 @@ class CotizacionController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $data = request()->validate([
+            'fecha' => 'required|after:'.now(),
+        ]);
+        $cotizacion = Cotizacion::find($id);
+        $cotizacion->fecha = $data['fecha'];
+        $cotizacion->save();
+        Mail::to($cotizacion->usuario->email)->send( new CotizacionEdit($cotizacion) );
+        return redirect()->action('CotizacionController@index')->with(['message' => 'Cotización modificada', 'alert' => 'alert-success' , 'icon' => 'check-circle']);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function updateStatus(Request $request, $id)
+    {
+        $data = request()->validate([
+            'status' => 'required',
+        ]);
+
+        $cotizacion = Cotizacion::find($id);
+
+        
+        $cotizacion->status = $data['status'];
+        $cotizacion->save();
+        Mail::to($cotizacion->usuario->email)->send( new CotizacionStatus($cotizacion) );
+        return redirect()->action('CotizacionController@index')->with(['message' => 'Status Modificado', 'alert' => 'alert-success' , 'icon' => 'check-circle']);
     }
 
     /**
@@ -123,4 +179,5 @@ class CotizacionController extends Controller
 
         return $cotizaciones;
     }
+
 }

@@ -32,11 +32,15 @@ Route::get('/store', 'StoreController@index')->name('store.index');
 
 
 Route::get('/cotizaciones', 'CotizacionController@index')->name('cotizacion.index');
+Route::get('/calendario', 'CotizacionController@calendario')->name('calendario');
 Route::post('/cotizacion', 'CotizacionController@store')->name('cotizacion.store');
+Route::get('/cotizacion/{cotizacion}/edit', 'CotizacionController@edit')->name('cotizacion.edit');
+Route::put('/cotizacion/{cotizacion}', 'CotizacionController@update')->name('cotizacion.update');
 Route::get('/cotizaciones/all', 'CotizacionController@cotizaciones')->name('cotizacion.all');
+Route::put('/cotizaciones/status/{cotizacion}', 'CotizacionController@updateStatus')->name('cotizacion.autorizar');
 
 
-Auth::routes();
+Auth::routes(['verify' => true]);
 
 
 

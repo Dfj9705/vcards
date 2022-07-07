@@ -6,6 +6,7 @@
 
 require('./bootstrap');
 require('./productos');
+require('./calendar');
 import "bootstrap-icons/font/bootstrap-icons.css"
 
 

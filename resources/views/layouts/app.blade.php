@@ -3,6 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" href="{{ asset('images/v_logo.jpeg') }}" type="image/x-icon">
 
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -18,7 +19,6 @@
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <x-head.tinymce-config/>
-    <link rel="shortcut icon" href="{{ asset('images/v_logo.jpeg') }}" type="image/x-icon">
     @yield('styles')
     @livewireStyles
 </head>
@@ -48,6 +48,9 @@
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" href="{{ route('cotizacion.index') }}">Cotizaciones</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ route('calendario') }}">Calendario</a>
                                 </li>
                             @endif
                         @endguest

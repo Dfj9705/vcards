@@ -16,4 +16,9 @@ class Cotizacion extends Model
         
         return $this->belongsTo(Producto::class);
     }
+    public function usuario()
+    {
+        
+        return $this->belongsTo(User::class,'user_id','id');
+    }
 }

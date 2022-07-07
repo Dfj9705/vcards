@@ -13,12 +13,12 @@
                 <thead class="table-dark">
                     <tr>
                         <th>Usuario</th>
-                        <th>Correo</th>
                         <th>Teléfono</th>
                         <th>Producto</th>
                         <th>Cantidad</th>
                         <th>Fecha</th>
                         <th>Status</th>
+                        <th>Acciones</th>
                     </tr>
                 </thead>
                 <tbody >
@@ -26,7 +26,7 @@
             </table>
         </div>
     </div>
-    
+    {{-- {{ $cotizaciones}} --}}
 
 @endsection
 @section('scripts')
@@ -43,11 +43,17 @@
             data : {!! $cotizaciones !!},
             columns: [
                 { data: 'name' },
-                { data: 'email' },
                 { data: 'telefono' },
                 { data: 'nombre' },
                 { data: 'cantidad' },
-                { data: 'fecha' },
+                { 
+                    data: 'fecha',
+                    "render" : (data) => {
+                        let fecha = new Date(data);
+                        return fecha.toLocaleDateString() + " " + fecha.toLocaleTimeString()
+                    } 
+            
+                },
                 { 
                     data: 'status',
                     "render" : (data) => {
@@ -55,11 +61,40 @@
                             case 1:
                                 return "Ingresado"
                                 break;
+                            case 2:
+                                return "Autorizado"
+                                break;
+                            case 3:
+                                return "Rechazado"
+                                break;
                         
                             default:
+                                return "Sin status"
                                 break;
                         }
                     }
+                },
+                { 
+                    data: 'id',
+                    "width" : '30%',
+                    render : (data) => ` 
+                            <div class="btn-group" role="group">
+                                <form action='cotizaciones/status/${data}' method='POST'>
+                                    @csrf
+                                    @method('PUT')
+                                    <input type='hidden' name='status' value='2'>
+                                    <button type='submit' class='btn btn-sm btn-success'><i class='bi bi-check-circle mr-2'></i>Autorizar</button>
+                                </form>
+                                <form action='cotizaciones/status/${data}'  method='POST'>
+                                    @csrf
+                                    @method('PUT')
+                                    <input type='hidden' name='status' value='3'>
+                                    <button type='submit' class='btn btn-sm btn-danger'><i class='bi bi-x-circle mr-2'></i>Denegar</button>
+                                </form>
+                                <a href='cotizacion/${data}/edit' class='btn btn-sm btn-warning'><i class='bi bi-pencil-square mr-2'></i>Editar</a>
+                                <button class='btn btn-sm btn-info'><i class='bi bi-envelope-paper mr-2'></i>Mensaje</button>
+                                
+                            </div> `
                 },
 
             ],

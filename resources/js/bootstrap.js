@@ -13,7 +13,8 @@ try {
     const Swal = require( 'sweetalert2');
     require('bootstrap');
     window.Swal = Swal;
-    window.bootstrap = require('bootstrap');
+    window.bootstrap = require('bootstrap'); 
+
 } catch (e) {}
 
 /**
