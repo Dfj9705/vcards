@@ -70,7 +70,7 @@
                             <div class="btn-group" role="group">
                                 <a href='productos/${data}' class='btn btn-info'><i class='bi bi-file-post mr-2'></i>Ver</a>
                                 <a class='btn btn-warning' href='productos/${data}/edit'><i class='bi bi-pencil mr-2'></i>Editar</a>
-                                <a class='btn btn-danger' onclick='confirmDelete(${data})'><i class='bi bi-trash mr-2'></i>Eliminar</a>
+                                <a class='btn btn-danger' onclick='confirmDelete(${data}, "productos")'><i class='bi bi-trash mr-2'></i>Eliminar</a>
                             </div>
                         `
                         

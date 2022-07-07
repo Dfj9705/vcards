@@ -190,7 +190,10 @@ class CotizacionController extends Controller
      */
     public function destroy($id)
     {
+        $cotizacion = Cotizacion::find($id);
+        $cotizacion->delete();
 
+        return redirect()->back();
     }
 
     /**

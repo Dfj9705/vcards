@@ -148,7 +148,7 @@
                 },
                 { 
                     data: 'id',
-                    "width" : '30%',
+                    "width" : '40%',
                     render : (data) => ` 
                             <div class="btn-group" role="group">
                                 <form action='cotizaciones/status/${data}' method='POST'>
@@ -165,6 +165,7 @@
                                 </form>
                                 <a href='cotizacion/${data}/edit' class='btn btn-sm btn-warning'><i class='bi bi-pencil-square mr-2'></i>Editar</a>
                                 <button data-toggle='modal' data-target='#messageModal' onclick='limpiarFormulario(${data})' class='btn btn-sm btn-info'><i class='bi bi-envelope-paper mr-2'></i>Mensaje</button>
+                                <button onclick='confirmDelete(${data}, "cotizacion")' class='btn btn-sm btn-danger'><i class='bi bi-trash mr-2'></i>Eliminar</button>
                                 
                             </div> `
                 },

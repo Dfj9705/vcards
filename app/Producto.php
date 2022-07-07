@@ -19,4 +19,9 @@ class Producto extends Model
         
         return $this->hasMany(ProductoDetalle::class);
     }
+    public function cotizaciones()
+    {
+        
+        return $this->hasMany(Cotizacion::class);
+    }
 }

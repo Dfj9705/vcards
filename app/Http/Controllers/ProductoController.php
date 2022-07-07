@@ -207,10 +207,15 @@ class ProductoController extends Controller
      */
     public function destroy(Producto $producto)
     {
+
+
         // $producto->delete();
         // return redirect()->action('ProductoController@index');
         foreach ($producto->fotografias as $fotografia) {
            $fotografia->delete();
+        } 
+        foreach ($producto->cotizaciones as $cotizacion) {
+           $cotizacion->delete();
         } 
         $producto->delete();
 

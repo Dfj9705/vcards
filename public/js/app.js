@@ -17689,7 +17689,7 @@ var swalWithBootstrapButtons = sweetalert2__WEBPACK_IMPORTED_MODULE_0___default(
   buttonsStyling: false
 });
 
-window.confirmDelete = function (id) {
+window.confirmDelete = function (id, recurso) {
   swalWithBootstrapButtons.fire({
     title: '¿Esta seguro que desea borrar este registro?',
     showCancelButton: true,
@@ -17701,17 +17701,31 @@ window.confirmDelete = function (id) {
       var params = {
         id: id
       };
-      axios.post("/productos/".concat(id), {
+      axios.post("/".concat(recurso, "/").concat(id), {
         params: params,
         _method: 'delete'
       }).then(function (response) {
         // console.log(response);
         sweetalert2__WEBPACK_IMPORTED_MODULE_0___default().fire({
-          title: "Receta Eliminada",
-          text: "Se eliminó la receta",
+          title: "Registro eliminado",
+          text: "Se eliminó el registro",
           icon: "success"
+        }).then(function (result) {
+          if (result) {
+            switch (recurso) {
+              case 'productos':
+                buscarProductos();
+                break;
+
+              case 'cotizacion':
+                location.reload();
+                break;
+
+              default:
+                break;
+            }
+          }
         });
-        buscarProductos();
       });
     }
   });

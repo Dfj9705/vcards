@@ -6,7 +6,7 @@ const swalWithBootstrapButtons = Swal.mixin({
     },
     buttonsStyling: false
   })
-window.confirmDelete = (id) =>{
+window.confirmDelete = (id, recurso) =>{
     swalWithBootstrapButtons.fire({
         title: '¿Esta seguro que desea borrar este registro?',
         showCancelButton: true,
@@ -16,15 +16,31 @@ window.confirmDelete = (id) =>{
       }).then((result) => {
         if(result.isConfirmed){
             const params = {id}
-            axios.post(`/productos/${id}`, {params, _method: 'delete'})
+            axios.post(`/${recurso}/${id}`, {params, _method: 'delete'})
             .then(response => {
                 // console.log(response);
                 Swal.fire({
-                    title : "Receta Eliminada",
-                    text : "Se eliminó la receta",
+                    title : "Registro eliminado",
+                    text : "Se eliminó el registro",
                     icon : "success"
+                }).then( (result) => {
+                  if(result){
+                    switch (recurso) {
+                      case 'productos':
+                        buscarProductos()
+            
+                        break;
+                      case 'cotizacion':
+                        location.reload();
+            
+                        break;
+                    
+                      default:
+                        break;
+                    }
+
+                  }
                 })
-                buscarProductos()
             })
         }
      
