@@ -10,6 +10,7 @@ use App\Mail\CotizacionStatus;
 use App\Cotizacion;
 use App\Mail\CotizacionCreate;
 use App\Mail\CotizacionEdit;
+use App\Mail\MensajePersonalizado;
 use Validator;
 
 class CotizacionController extends Controller
@@ -158,6 +159,30 @@ class CotizacionController extends Controller
     }
 
     /**
+     * Mensaje personalizado
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function mensaje(Request $request)
+    {
+        // return response()->json($request);
+        $validator = Validator::make($request->all(), [
+            'cotizacion' => 'required',
+            'mensaje' => 'required',
+    
+            
+        ]);
+
+        if($validator->passes()){
+            $cotizacion = Cotizacion::find($request['cotizacion']);
+            Mail::to($cotizacion->usuario->email)->send( new MensajePersonalizado($cotizacion, $request['mensaje']) );
+            return response()->json($cotizacion);
+
+        }
+        return response()->json(['error'=>$validator->errors()->all()]);
+    }
+    /**
      * Remove the specified resource from storage.
      *
      * @param  int  $id
@@ -165,7 +190,7 @@ class CotizacionController extends Controller
      */
     public function destroy($id)
     {
-        //
+
     }
 
     /**

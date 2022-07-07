@@ -37,6 +37,7 @@ Route::post('/cotizacion', 'CotizacionController@store')->name('cotizacion.store
 Route::get('/cotizacion/{cotizacion}/edit', 'CotizacionController@edit')->name('cotizacion.edit');
 Route::put('/cotizacion/{cotizacion}', 'CotizacionController@update')->name('cotizacion.update');
 Route::get('/cotizaciones/all', 'CotizacionController@cotizaciones')->name('cotizacion.all');
+Route::post('/cotizaciones/mensaje', 'CotizacionController@mensaje')->name('cotizacion.mensaje');
 Route::put('/cotizaciones/status/{cotizacion}', 'CotizacionController@updateStatus')->name('cotizacion.autorizar');
 
 
