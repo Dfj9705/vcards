@@ -20,7 +20,27 @@ window.renderCalendar = (element, data) =>{
         events : data,
         eventClick: function(info) {
             console.log(info.event);
-            Swal.fire({title: info.event.title, text: info.event.usuario } )
+            Swal.fire({
+              title: info.event.title, 
+              text: info.event.usuario,
+              confirmButtonText : "Finalizar"
+            } ).then((result)=>{
+              if(result.isConfirmed){
+                // console.log(info.event.id);
+                const params = {id: info.event.id}
+                axios.post(`/cotizaciones/finalizar/${info.event.id}`, {params, _method: 'PUT'})
+                .then(response => {
+                  // console.log(response);
+                  Swal.fire({
+                    title : "Evento Finalizado",
+                    text : "Se finalizó el evento",
+                    icon : "success"
+                  })
+                  // console.log(response.data);
+                  renderCalendar(document.getElementById('calendar'), response.data)
+                })
+              }
+            })
         }
       });
 

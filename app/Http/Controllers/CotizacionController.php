@@ -196,6 +196,30 @@ class CotizacionController extends Controller
         return redirect()->back();
     }
 
+      /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function finalizar($id)
+    {
+        $cotizacion = Cotizacion::find($id);
+        $cotizacion->status = 4;
+        $cotizacion->save();
+        // Mail::to($cotizacion->usuario->email)->send( new MensajePersonalizado($cotizacion );
+        $cotizaciones = DB::table('cotizaciones')
+        ->select('fecha as date',  'productos.nombre as title', 'cotizaciones.id as id', 'users.name as usuario')
+        ->join('users','cotizaciones.user_id', '=','users.id')
+        ->join('productos','cotizaciones.producto_id','=','productos.id')
+        ->where('status','=','2')
+        ->get();
+        return response()->json($cotizaciones);
+
+        // return redirect()->back();
+    }
+
+
     /**
      * 
      *

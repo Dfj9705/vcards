@@ -40,7 +40,7 @@
                 <div class="row">
                     <form id="formMessage" class="col" method="POST">
                         @csrf
-                        <input type="text" id="cotizacion" name="cotizacion" value='{{ old('cotizacion') }}'>
+                        <input type="hidden" id="cotizacion" name="cotizacion" value='{{ old('cotizacion') }}'>
                         <div class="row">
                             <div class="col-12">
                                 <label for="mensaje">Mensaje</label>
@@ -138,6 +138,9 @@
                                 break;
                             case 3:
                                 return "Rechazado"
+                                break;
+                            case 4:
+                                return "Finalizado"
                                 break;
                         
                             default:

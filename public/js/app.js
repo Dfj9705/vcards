@@ -17457,7 +17457,28 @@ window.renderCalendar = function (element, data) {
       console.log(info.event);
       sweetalert2__WEBPACK_IMPORTED_MODULE_5___default().fire({
         title: info.event.title,
-        text: info.event.usuario
+        text: info.event.usuario,
+        confirmButtonText: "Finalizar"
+      }).then(function (result) {
+        if (result.isConfirmed) {
+          // console.log(info.event.id);
+          var params = {
+            id: info.event.id
+          };
+          axios.post("/cotizaciones/finalizar/".concat(info.event.id), {
+            params: params,
+            _method: 'PUT'
+          }).then(function (response) {
+            // console.log(response);
+            sweetalert2__WEBPACK_IMPORTED_MODULE_5___default().fire({
+              title: "Evento Finalizado",
+              text: "Se finalizó el evento",
+              icon: "success"
+            }); // console.log(response.data);
+
+            renderCalendar(document.getElementById('calendar'), response.data);
+          });
+        }
       });
     }
   });

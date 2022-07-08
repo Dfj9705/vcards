@@ -12,6 +12,7 @@
             </thead>
             <tbody>
                 @foreach ($cotizaciones as $llave => $cotizacion)
+                    
                    <tr>
                        <td>{{ $llave + 1 }}</td>
                        <td>{{ $cotizacion->producto->nombre }}</td>
@@ -26,6 +27,9 @@
                                 @break
                             @case(3)
                                 Rechazado
+                                @break
+                            @case(4)
+                                Finalizado
                                 @break
                             @default
                                 
