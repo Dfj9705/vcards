@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Producto;
+use App\TipoProducto;
 use Illuminate\Http\Request;
 
 class StoreController extends Controller
@@ -15,7 +16,8 @@ class StoreController extends Controller
     public function index()
     {
         $productos = Producto::paginate(10);
-        return view('store.index', compact('productos'));
+        $tipos = TipoProducto::all();
+        return view('store.index', compact('productos', 'tipos'));
     }
 
     /**

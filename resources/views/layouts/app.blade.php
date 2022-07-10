@@ -81,12 +81,12 @@
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item">Editar datos</a>
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
                                         {{ __('Logout') }}
                                     </a>
-
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                                         @csrf
                                     </form>
@@ -98,7 +98,7 @@
             </div>
         </nav>
 
-        <main class="container py-4">
+        <main class="container-fluid py-4 px-5">
             @if(session()->has('message'))
                 <div class="alert {{session('alert') ?? 'alert-info'}}">
                     <i class="bi bi-{{ session('icon') ?? 'exclamation-circle' }}"></i>
@@ -110,7 +110,7 @@
             @endif
             @yield('content')
         </main>
-        <footer class="container-fluid text-center  border-top bg-light ">
+        <footer class="container-fluid text-center ">
             <div class="row">
                 <div class="col-12">
                     <p class=" text-muted">
