@@ -100,6 +100,7 @@ class PerfilController extends Controller
      */
     public function edit(Perfil $perfil)
     {
+        $this->authorize('update', $perfil);
         return view('perfil.edit',compact('perfil'));
     }
 
@@ -112,6 +113,7 @@ class PerfilController extends Controller
      */
     public function update(Request $request, Perfil $perfil)
     {
+        $this->authorize('update', $perfil);
         $data = request()->validate([
             'name' => 'required|min:6',
             'telefono' => 'required|min:8|numeric',            
