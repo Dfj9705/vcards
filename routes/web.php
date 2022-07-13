@@ -13,9 +13,7 @@ use Illuminate\Support\Facades\Auth;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', 'HomeController@index')->name('home');
 
 Route::get('/productos', 'ProductoController@index')->name('productos.index');
 Route::get('/productos/create', 'ProductoController@create')->name('productos.create');
