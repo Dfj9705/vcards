@@ -43,6 +43,12 @@ Route::put('/cotizaciones/finalizar/{cotizacion}', 'CotizacionController@finaliz
 Route::delete('/cotizacion/{cotizacion}', 'CotizacionController@destroy')->name('cotizacion.destroy');
 
 
+Route::get('/perfil', 'PerfilController@index')->name('perfil.index');
+Route::get('/perfil/create', 'PerfilController@create')->name('perfil.create');
+Route::post('/perfil/store', 'PerfilController@store')->name('perfil.store');
+Route::get('/perfil/{perfil}/edit', 'PerfilController@edit')->name('perfil.edit');
+Route::put('/perfil/{perfil}', 'PerfilController@update')->name('perfil.update');
+
 Auth::routes(['verify' => true]);
 
 
