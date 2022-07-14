@@ -12,7 +12,7 @@
         <div class="col-12">
             <h2>Nuestros productos más cotizados</h2>
         </div>
-        <div  class="col-lg-13 border rounded p-3 bg-light"  >
+        <div  class="col-lg-12 border rounded p-3 bg-light"  >
             <div class="row py-2">
                 @if (count($cotizaciones) > 0)
                   

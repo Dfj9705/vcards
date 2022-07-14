@@ -28,7 +28,7 @@
                     Permanece pendiente para la confirmación
                 </p>
                 <p>
-                    Si tienes alguna duda, puedes escribirnos al número 55566663
+                    Si tienes alguna duda, puedes escribirnos al número 41683352
                 </p>
                 <blockquote class="blockquote">
                     <figcaption class="blockquote-footer">

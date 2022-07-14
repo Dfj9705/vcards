@@ -19,7 +19,7 @@ Route::get('/productos', 'ProductoController@index')->name('productos.index')->m
 Route::get('/productos/create', 'ProductoController@create')->name('productos.create')->middleware('role');
 Route::post('/productos/store', 'ProductoController@store')->name('productos.store')->middleware('role');
 Route::get('/productos/list', 'ProductoController@getProductos')->name('productos.list')->middleware('role');
-Route::get('/productos/{producto}', 'ProductoController@show')->name('productos.show');
+Route::get('/productos/{producto}', 'ProductoController@show')->name('productos.show')->middleware('verified');
 Route::get('/productos/{producto}/edit', 'ProductoController@edit')->name('productos.edit')->middleware('role');
 Route::put('/productos/{producto}', 'ProductoController@update')->name('productos.update')->middleware('role');
 Route::delete('/productos/{producto}', 'ProductoController@destroy')->name('productos.destroy')->middleware('role');
@@ -41,11 +41,13 @@ Route::put('/cotizaciones/finalizar/{cotizacion}', 'CotizacionController@finaliz
 Route::delete('/cotizacion/{cotizacion}', 'CotizacionController@destroy')->name('cotizacion.destroy');
 
 
-Route::get('/perfil', 'PerfilController@index')->name('perfil.index');
-Route::get('/perfil/create', 'PerfilController@create')->name('perfil.create');
-Route::post('/perfil/store', 'PerfilController@store')->name('perfil.store');
-Route::get('/perfil/{perfil}/edit', 'PerfilController@edit')->name('perfil.edit');
-Route::put('/perfil/{perfil}', 'PerfilController@update')->name('perfil.update');
+Route::get('/perfil', 'PerfilController@index')->name('perfil.index')->middleware('verified');
+Route::get('/perfil/create', 'PerfilController@create')->name('perfil.create')->middleware('verified');
+Route::post('/perfil/store', 'PerfilController@store')->name('perfil.store')->middleware('verified');
+Route::get('/perfil/{perfil}/edit', 'PerfilController@edit')->name('perfil.edit')->middleware('verified');
+Route::put('/perfil/{perfil}', 'PerfilController@update')->name('perfil.update')->middleware('verified');
+
+Route::get('/mensaje/{id}', 'TwilioController@message')->name('mensaje');
 
 Auth::routes(['verify' => true]);
 

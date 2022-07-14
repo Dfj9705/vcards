@@ -38,7 +38,7 @@
             <p class="h4 text-success font-weight-bold">Precio: Q.{{ number_format($producto->precio, 2) }}</p>
             <div class="row">
                 <div class="col-6">
-                    <button class="btn btn-success btn-block"><i class="bi bi-whatsapp mr-2"></i>Información</button>
+                    <a href="{{ route('mensaje', ['id' => $producto->id ]) }}" class="btn btn-success btn-block"><i class="bi bi-whatsapp mr-2"></i>Información</a>
                 </div>
                 <div class="col-6">
                     <button class="btn btn-primary btn-block"  data-toggle="modal" data-target="#showModal"><i class="bi bi-bag-plus mr-2"></i>Cotizar</button>
