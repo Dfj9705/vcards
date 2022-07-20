@@ -18,10 +18,10 @@
     
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    @laravelPWA
     <x-head.tinymce-config/>
     @yield('styles')
     @livewireStyles
-    @laravelPWA
 </head>
 <body>
     <div id="app">
